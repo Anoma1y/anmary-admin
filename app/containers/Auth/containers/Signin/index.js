@@ -73,9 +73,9 @@ export default class Signin extends Component {
       <Grid item xs={12}>
         <Grid container justify={'center'}>
           <Grid item xs={12} className={'auth_title'}>
-            <Typography variant={'title'}>
-              Касса
-            </Typography>
+            <h1>
+              Anmary
+            </h1>
           </Grid>
           <Grid item xs={2}>
             <Grid container justify={'center'} className={'auth-form'}>
