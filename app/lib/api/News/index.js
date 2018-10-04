@@ -18,6 +18,10 @@ export default class News {
     });
   }
 
+  delete(news_id) {
+    return this.http.delete(`${config.DELETE}/${news_id}`);
+  }
+
   getList() {
     return this.http.get(config.GET_LIST);
   }

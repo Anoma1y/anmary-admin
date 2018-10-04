@@ -5,28 +5,39 @@ import {
   Grid,
   Button,
   CircularProgress,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Slide,
   TextField
 } from '@material-ui/core';
 import {
+  Edit as EditIcon,
+  Delete as DeleteIcon,
   AttachFile as AttachFileIcon,
 } from '@material-ui/icons';
 import {
   pullNews,
+  deleteNews,
   resetNewsSingle
 } from './store/actions';
 import moment from 'moment';
-import { amountOutput } from 'lib/amount';
-import _ from 'lodash';
+
+const Transition = (props) => <Slide direction="up" {...props} />;
 
 @connect(({ Admin_News_Single }) => ({ Admin_News_Single }), ({
   pullNews,
+  deleteNews,
   resetNewsSingle,
   replace,
 }))
 export default class Single extends Component {
 
   state = {
-    ready: false
+    ready: false,
+    confirmDelete: false,
   };
 
   componentDidMount() {
@@ -39,6 +50,14 @@ export default class Single extends Component {
   componentWillUnmount() {
     this.props.resetNewsSingle();
   }
+
+  handleClickOpenConfirmDelete = () => {
+    this.setState({ confirmDelete: true });
+  };
+
+  handleCloseConfirmDelete = () => {
+    this.setState({ confirmDelete: false });
+  };
 
   renderLoader = () => <CircularProgress size={24} className={'admin_loading'} />;
 
@@ -143,14 +162,61 @@ export default class Single extends Component {
         </Grid>
 
         <Grid container spacing={40} className={'product-single_row product-single_edit-btn'}>
-          <Grid item sm={12} xs={6} lg={3}>
+          <Grid item sm={6} xs={6} lg={3}>
             <Button
               fullWidth
               variant={'raised'}
               onClick={() => this.props.replace(`/admin/news/${id}/edit`)}
             >
+              <EditIcon />
               Изменить
             </Button>
+          </Grid>
+          <Grid item sm={6} xs={6} lg={3}>
+            <Button
+              fullWidth
+              color={'secondary'}
+              variant={'raised'}
+              onClick={this.handleClickOpenConfirmDelete}
+            >
+              <DeleteIcon />
+              Удалить
+            </Button>
+
+            <Dialog
+              open={this.state.confirmDelete}
+              TransitionComponent={Transition}
+              keepMounted
+              onClose={this.handleCloseConfirmDelete}
+              aria-labelledby={'alert-dialog-slide-title'}
+              aria-describedby={'alert-dialog-slide-description'}
+            >
+              <DialogTitle id={'alert-dialog-slide-title'}>
+                {'Удалить?'}
+              </DialogTitle>
+              <DialogContent>
+                <DialogContentText id={'alert-dialog-slide-description'}>
+                  Подтвердите удаление новости
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button
+                  onClick={this.handleCloseConfirmDelete}
+                  color={'secondary'}
+                  variant={'raised'}
+                >
+                  Отменить
+                </Button>
+                <Button
+                  onClick={() => this.props.deleteNews(id)}
+                  color={'primary'}
+                  variant={'raised'}
+                >
+                  Подтвердить
+                </Button>
+              </DialogActions>
+            </Dialog>
+
           </Grid>
         </Grid>
       </Grid>
