@@ -4,6 +4,7 @@ import AuthApiModule from './Auth';
 import CategoryApiModule from './Category';
 import SeasonApiModule from './Season';
 import BrandApiModule from './Brand';
+import OrdersApiModule from './Orders';
 import ImagesApiModule from './Images';
 import UsersApiModule from './Users';
 import SizeApiModule from './Size';
@@ -49,6 +50,7 @@ class Api {
     this.subscribe = new SubscribeApiModule(this.http);
     this.proportion = new ProportionApiModule(this.http);
     this.feedback = new FeedbackApiModule(this.http);
+    this.orders = new OrdersApiModule(this.http);
   }
 
   /**
