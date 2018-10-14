@@ -122,7 +122,7 @@ export default class Categories extends Component {
     );
   };
 
-  renderInfo = (index, name, description) => {
+  renderInfo = (index, name, singular, description) => {
     return (
       <React.Fragment>
         {
@@ -136,7 +136,11 @@ export default class Categories extends Component {
                 />
               </Grid>
               <Grid item xs={12} md={3} className={'category-list_edit-select'}>
-
+                <TextField
+                  fullWidth
+                  onChange={(event) => this.handleChangeCategoryInfo(event.target.value, 'singular')}
+                  value={this.props.Admin_Categories.categoryInfo.singular}
+                />
               </Grid>
               <Grid item xs={12} md={6} className={'category-list_edit-input'}>
                 <TextField
@@ -151,7 +155,10 @@ export default class Categories extends Component {
               <Grid item xs={12} md={3} className={'category-list_item-input'}>
                 {name}
               </Grid>
-              <Grid item xs={12} md={6} className={'category-list_item-input'}>
+              <Grid item xs={12} md={3} className={'category-list_item-input'}>
+                {singular}
+              </Grid>
+              <Grid item xs={12} md={4} className={'category-list_item-input'}>
                 {description}
               </Grid>
             </Grid>
@@ -173,7 +180,7 @@ export default class Categories extends Component {
             permissions.includes('categories-create') && (
               <Fragment>
                 <Grid container spacing={40} className={'category-add'}>
-                  <Grid item xs={12} md={4} className={'category-add_item category-add_input'}>
+                  <Grid item xs={12} md={3} className={'category-add_item category-add_input'}>
                     <TextField
                       fullWidth
                       label={'Название'}
@@ -182,7 +189,16 @@ export default class Categories extends Component {
                     />
                   </Grid>
 
-                  <Grid item xs={12} md={6} className={'category-add_item category-add_input'}>
+                  <Grid item xs={12} md={3} className={'category-add_item category-add_input'}>
+                    <TextField
+                      fullWidth
+                      label={'Название в ед. числе'}
+                      value={this.props.Admin_Categories.addCategory.singular}
+                      onChange={(event) => this.handleAddCategoryChange(event.target.value, 'singular')}
+                    />
+                  </Grid>
+
+                  <Grid item xs={12} md={4} className={'category-add_item category-add_input'}>
                     <TextField
                       fullWidth
                       label={'Описание'}
@@ -219,13 +235,13 @@ export default class Categories extends Component {
               ) : (
                 this.props.Admin_Categories.categories.map((category, index) => {
 
-                  const { id, name, description } = category;
+                  const { id, name, singular, description } = category;
 
                   return (
                     <Grid item xs={12} className={'category-list_item'} key={id}>
                       <Grid container justify={'space-between'} spacing={24}>
                         <Grid item xs={12} md={9} className={'category-list_item-content'}>
-                          {this.renderInfo(index, name, description)}
+                          {this.renderInfo(index, name, singular, description)}
                         </Grid>
                         <Grid item xs={12} md={3}>
                           {permissions.includes('categories-edit') && this.renderControl(index)}

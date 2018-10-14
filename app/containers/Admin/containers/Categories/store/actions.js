@@ -76,7 +76,7 @@ export const pullCategories = () => (dispatch) => new Promise((resolve, reject) 
 })
 
 export const addNewCategory = () => (dispatch, getState) => {
-  const { name, description, type } = getState().Admin_Categories.addCategory;
+  const { name, singular, description, type } = getState().Admin_Categories.addCategory;
 
   if (name.length === 0) {
     dispatch(send({ id: uuid(), status: 'warning', title: 'Предупреждение', message: 'Заполните имя категории', timeout: 1000 }));
@@ -84,7 +84,7 @@ export const addNewCategory = () => (dispatch, getState) => {
   }
 
   dispatch(setIsLoading(true));
-  api.category.add(name, description, type)
+  api.category.add(name, singular, description, type)
     .then((data) => {
       if (data.status !== api.code.CREATED) return;
 
@@ -99,6 +99,7 @@ export const applyCategoryName = (index) => (dispatch, getState) => {
   const {
     categoryInfo: {
       name,
+      singular,
       description,
       type
     },
@@ -108,11 +109,12 @@ export const applyCategoryName = (index) => (dispatch, getState) => {
 
   const editCategory = {
     name: name === '' ? category.name : name,
+    singular: singular === '' ? category.singular : singular,
     type,
     description: description === category.description ? category.description : description,
   };
 
-  if (editCategory.name === category.name && editCategory.description === category.description && editCategory.type === category.type) return;
+  if (editCategory.name === category.name && editCategory.singular === category.singular && editCategory.description === category.description && editCategory.type === category.type) return;
 
   if (editCategory.name.length === 0) {
     dispatch(send({ id: uuid(), status: 'warning', title: 'Предупреждение', message: 'Заполните имя категории', timeout: 1000 }));
@@ -120,7 +122,7 @@ export const applyCategoryName = (index) => (dispatch, getState) => {
   }
 
   dispatch(setIsLoading(true));
-  api.category.edit(category.id, editCategory.name, editCategory.description, editCategory.type)
+  api.category.edit(category.id, editCategory.name, editCategory.singular, editCategory.description, editCategory.type)
     .then((data) => {
       if (data.status !== api.code.OK) return;
 

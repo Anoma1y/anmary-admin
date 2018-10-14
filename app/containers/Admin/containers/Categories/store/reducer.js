@@ -15,10 +15,12 @@ const INITIAL_STATE = {
   categories: [],
   categoryInfo: {
     name: '',
+    singular: '',
     description: ''
   },
   addCategory: {
     name: '',
+    singular: '',
     description: ''
   },
   isLoading: false
@@ -34,12 +36,13 @@ const HANDLERS = {
     categories: [...state.categories, payload]
   }),
   [SET_CATEGORY_INFO]: (state, { payload }) => {
-    const { name, description } = state.categories[payload];
+    const { name, singular, description } = state.categories[payload];
 
     return {
       ...state,
       categoryInfo: {
         name,
+        singular,
         description
       }
     };
