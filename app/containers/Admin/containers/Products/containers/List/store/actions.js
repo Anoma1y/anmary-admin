@@ -108,7 +108,7 @@ export const applyFilter = (pageParam, numOnPageParam) => (dispatch, getState) =
     dispatch(send({ id: uuid(), status: 'warning', title: 'Предупреждение', message: 'Сумма "от" не может быть больше "до"', timeout: 1000 }));
     return;
   }
-
+  console.log(removeEmpty(filter))
   const filter_data = serializeParams(removeEmpty(filter));
 
   dispatch(setIsLoading(true));

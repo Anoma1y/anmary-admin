@@ -30,13 +30,18 @@ export const getValuesDeep = (object) => {
  * @param obj - исходный объект
  * @returns {*}
  */
+// export const removeEmpty = (obj) => {
+//   Object.keys(obj).forEach(key => {
+//     ((obj[key]) && typeof obj[key] === 'object') && removeEmpty(obj[key]) || (obj[key] === undefined) || (obj[key] === null) && delete obj[key];
+//   });
+//   return obj;
+// };
+
 export const removeEmpty = (obj) => {
-  Object.keys(obj).forEach(key => {
-    ((obj[key]) && typeof obj[key] === 'object') && removeEmpty(obj[key]) || (obj[key] === undefined) || (obj[key] === null) && delete obj[key];
-  });
+  Object.keys(obj).forEach(key => (obj[key] === undefined || obj[key] === null) ? delete obj[key] : obj[key]);
+  
   return obj;
 };
-
 /**
  * Функция для преобразования base64 в формат file
  * @param base64 - код base64
